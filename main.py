@@ -4,19 +4,27 @@ import os
 from colorama import just_fix_windows_console
 just_fix_windows_console()
 colorama.init()
+from rich import inspect
+import inquirer
 
 def title_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
+    global inp
 
-    print(colorama.Fore.BLUE + "##### STOODY HELPER ######\n\n-----1) KANBAN-----\n-----2) TASK MANAGER")
-    global inp 
-    inp = input("\uf061 ")
+    opt = [inquirer.List('Option: ',
+                         message = colorama.Style.BRIGHT + 'Select',
+                         choices = [colorama.Fore.GREEN + 'Kanban', 
+                                    colorama.Fore.GREEN + 'Task Manager'])]
+
+    
+    inp = inquirer.prompt(opt)
+    inspect(inp)
     return inp
 
 def options(INPUT):
-    if INPUT == "KANBAN".lower() or '1' or '1)':
+    if INPUT == "KANBAN".lower() or '1':
         kanban()
-    elif INPUT == "TASK MANAGER" or '2' or '2)':
+    elif INPUT == "TASK MANAGER".lower() or '2':
         task_manager()
     else:
         print("err... \nNOT AN OPTION")
