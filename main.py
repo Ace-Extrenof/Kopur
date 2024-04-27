@@ -7,34 +7,40 @@ colorama.init()
 from rich import inspect
 import inquirer
 
-def title_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    global inp
 
-    opt = [inquirer.List('Option: ',
-                         message = colorama.Style.BRIGHT + 'Select',
-                         choices = [colorama.Fore.GREEN + 'Kanban', 
-                                    colorama.Fore.GREEN + 'Task Manager'])]
 
-    
-    inp = inquirer.prompt(opt)
-    inspect(inp)
-    return inp
+def main():
+    def title_screen():
+        os.system('cls' if os.name == 'nt' else 'clear')
+        global inp
 
-def options(INPUT):
-    if INPUT == "KANBAN".lower() or '1':
-        kanban()
-    elif INPUT == "TASK MANAGER".lower() or '2':
-        task_manager()
-    else:
-        print("err... \nNOT AN OPTION")
+        opt = [inquirer.List('choice',
+                             message = colorama.Style.BRIGHT + 'Select',
+                             choices = [colorama.Fore.GREEN + 'Kanban', 
+                                        colorama.Fore.GREEN + 'Task Manager'])]
 
-def kanban():
-    print("kanban ;)")
+        
+        ans = inquirer.prompt(opt)
+        global INPUT
+        INPUT = ans['choice']
 
-def task_manager():
-    print("task manager")
+    def options():
+        if INPUT == "Task Manager".lower() or '1':
+            task_manager()
+        elif INPUT == "Knban".lower() or INPUT == '2':
+            kanban()
+        else:
+            print("err... \nNOT AN OPTION")
+
+    def kanban():
+        print("kanban ;)")
+
+    def task_manager():
+        print("task manager")
+
+    title_screen()
+    options()
+
 
 if __name__ == "__main__":
-    title_screen()
-    options(inp)
+    main()
