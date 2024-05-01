@@ -29,6 +29,23 @@ def main():
         else:
             taskLoop(tasks)
 
+    def task_seletecion(all_tasks, operation):
+        task_number = input(f"Enter the task index which you want to {operation}: ")
+
+        valid = False
+        while not valid:
+            try:
+                number = int(task_number)
+                valid = True
+            except:
+                task_number = input('Please provide a valid task number: ')
+
+        if not (0 < number <= len(all_tasks)):
+            print('Task not found!')
+            task_seletecion(all_tasks, operation)
+        else:
+            return number
+
     def addTask(all_tasks):
 
         new_task = input(colorama.Fore.GREEN + "Enter new task: ")
@@ -40,12 +57,15 @@ def main():
         pass
 
     def deleteTask(all_tasks):
-        pass
-
+        task_number = task_seletecion(tasks, 'delete') 
+        all_tasks.remove(all_tasks[task_number - 1])
+        
+        display(tasks)
+        taskLoop(tasks)
 
     def display(all_tasks):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(pyfiglet.figlet_format('Kanban\n'))
+        print(colorama.Fore.YELLOW + pyfiglet.figlet_format('Kanban\n'))
 
         if len(all_tasks) == 0:
             print("No tasks! BOOOOOOOOO!")
