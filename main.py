@@ -66,12 +66,9 @@ def main():
         taskLoop(tasks)
 
     def deleteTask(all_tasks):
-        del_task = [inquirer.List('tasks',
-                                  message='Choose Task:',
-                                  choices=all_tasks)]
-        
-        ans = inquirer.prompt(del_task)
-        all_tasks.remove(all_tasks[ans])
+        task_number = task_seletecion(tasks, 'delete')
+
+        all_tasks.remove(all_tasks[task_number])
         
         display(tasks)
         taskLoop(tasks)
