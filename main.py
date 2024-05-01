@@ -6,7 +6,8 @@ just_fix_windows_console()
 from rich import inspect
 import inquirer
 import pyfiglet
-import tabulate
+from rich.panel import Panel
+from rich.console import Console
 
 def main():
     tasks = []
@@ -30,12 +31,13 @@ def main():
             taskLoop(tasks)
 
     def task_seletecion(all_tasks, operation):
-        task_number = input(f"Enter the task index which you want to {operation}: ")
+        task_number = input(f"Enter the task index which you want to {operation} [index starts from 0]: ")
 
+        number = 0
         valid = False
         while not valid:
             try:
-                number = int(task_number)
+                number: int = int(task_number)
                 valid = True
             except:
                 task_number = input('Please provide a valid task number: ')
@@ -57,27 +59,30 @@ def main():
         task_number = task_seletecion(tasks, 'edit')
         new_task = input('Enter new task: ')
 
-        all_tasks[task_number - 1] = new_task
+        all_tasks[task_number] = new_task
 
         display(tasks)
         taskLoop(tasks)
 
     def deleteTask(all_tasks):
         task_number = task_seletecion(tasks, 'delete') 
-        all_tasks.remove(all_tasks[task_number - 1])
+        all_tasks.remove(all_tasks[task_number])
         
         display(tasks)
         taskLoop(tasks)
 
     def display(all_tasks):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(colorama.Fore.YELLOW + pyfiglet.figlet_format('Kanban\n'))
+        kanban_title = (colorama.Fore.GREEN + pyfiglet.figlet_format('Kanban\n'))
+
+        title = Panel(kanban_title)
+        Console().print(title)
 
         if len(all_tasks) == 0:
             print("No tasks! BOOOOOOOOO!")
         else:
             for index, task in enumerate(all_tasks):
-                print(f'{index + 1}) {task}')
+                print(f'[{index}] {task}')
 
     taskLoop(tasks)
 
