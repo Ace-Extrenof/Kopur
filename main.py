@@ -66,8 +66,12 @@ def main():
         taskLoop(tasks)
 
     def deleteTask(all_tasks):
-        task_number = task_seletecion(tasks, 'delete') 
-        all_tasks.remove(all_tasks[task_number])
+        del_task = [inquirer.List('tasks',
+                                  message='Choose Task:',
+                                  choices=all_tasks)]
+        
+        ans = inquirer.prompt(del_task)
+        all_tasks.remove(all_tasks[ans])
         
         display(tasks)
         taskLoop(tasks)
@@ -78,19 +82,12 @@ def main():
 
         title = Panel(kanban_title)
         Console().print(title)
-        table = Table(title='Tasks')
-        table.add_column('Tasks', justify='right', no_wrap=True)
-        table.add_column('Working')
-        table.add_column('Completed')
-
 
         if len(all_tasks) == 0:
             print("No tasks! BOOOOOOOOO!")
         else:
-            for task in enumerate(all_tasks):
-                table.add_row(f'{task}')
-                Console().print(table)
-                os.system('cls' if os.name == 'nt' else 'clear')
+            for index, task in enumerate(all_tasks):
+                print(f'{index + 1}) {task}')
 
     taskLoop(tasks)
 
