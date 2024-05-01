@@ -8,6 +8,7 @@ import inquirer
 import pyfiglet
 from rich.panel import Panel
 from rich.console import Console
+from rich.table import Table
 
 def main():
     tasks = []
@@ -15,7 +16,7 @@ def main():
     
     def taskLoop(all_tasks):    
         
-        display(tasks)
+        display(all_tasks)
         
         operation = input(colorama.Fore.GREEN + "'n' to make new task, 'e' to edit task, 'd' to delete task, q to exit: ")
         
@@ -28,7 +29,7 @@ def main():
         elif operation == 'q':
             return
         else:
-            taskLoop(tasks)
+            taskLoop(all_tasks)
 
     def task_seletecion(all_tasks, operation):
         task_number = input(f"Enter the task index which you want to {operation} [index starts from 0]: ")
@@ -77,12 +78,19 @@ def main():
 
         title = Panel(kanban_title)
         Console().print(title)
+        table = Table(title='Tasks')
+        table.add_column('Tasks', justify='right', no_wrap=True)
+        table.add_column('Working')
+        table.add_column('Completed')
+
 
         if len(all_tasks) == 0:
             print("No tasks! BOOOOOOOOO!")
         else:
-            for index, task in enumerate(all_tasks):
-                print(f'[{index}] {task}')
+            for task in enumerate(all_tasks):
+                table.add_row(f'{task}')
+                Console().print(table)
+                os.system('cls' if os.name == 'nt' else 'clear')
 
     taskLoop(tasks)
 
