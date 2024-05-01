@@ -54,7 +54,13 @@ def main():
         taskLoop(tasks)
 
     def editTask(all_tasks):
-        pass
+        task_number = task_seletecion(tasks, 'edit')
+        new_task = input('Enter new task: ')
+
+        all_tasks[task_number - 1] = new_task
+
+        display(tasks)
+        taskLoop(tasks)
 
     def deleteTask(all_tasks):
         task_number = task_seletecion(tasks, 'delete') 
